@@ -60,6 +60,11 @@ class Product implements JsonSerializable
         $this->quantity = $quantity;
     }
 
+    public function id(): int
+    {
+        return $this->id;
+    }
+
     public function expiresAt(): ?Carbon
     {
         return $this->expiresAt;
@@ -103,7 +108,5 @@ class Product implements JsonSerializable
             "updatedAt" => $this->updatedAt->timezone("Europe/Riga")->format(DateTimeInterface::ATOM),
         ];
     }
-
-
 
 }
