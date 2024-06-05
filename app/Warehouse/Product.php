@@ -5,12 +5,14 @@ namespace App\Warehouse;
 use Carbon\Carbon;
 use DateTimeInterface;
 use JsonSerializable;
+use Ramsey\Uuid\Uuid;
 
 class Product implements JsonSerializable
 {
     private string $name;
     private string $price;
     private string $quantity;
+    private string $id;
     private ?Carbon $expiresAt;
     private Carbon $createdAt;
     private Carbon $updatedAt;
@@ -19,6 +21,7 @@ class Product implements JsonSerializable
         string $name,
         string $price,
         string $quantity,
+        ?string $id,
         ?string $expiresAt = null,
         ?string $createdAt = null,
         ?string $updatedAt = null
@@ -26,6 +29,7 @@ class Product implements JsonSerializable
         $this->name = $name;
         $this->price = $price;
         $this->quantity = $quantity;
+        $this->id = $id ?: Uuid::uuid4()->toString();
         $this->expiresAt = $expiresAt ? Carbon::parse($expiresAt) : Carbon::now("UTC");
         $this->createdAt = $createdAt ? Carbon::parse($createdAt) : Carbon::now("UTC");
         $this->updatedAt = $updatedAt ? Carbon::parse($updatedAt) : Carbon::now("UTC");
@@ -91,6 +95,7 @@ class Product implements JsonSerializable
             "name" => $this->name,
             "price" => $this->price,
             "quantity" => $this->quantity,
+            "id" => $this->id,
             "expiresAt" => $this->expiresAt ?
                 $this->expiresAt->timezone("Europe/Riga")->format(DateTimeInterface::ATOM) :
                 null,
