@@ -1,0 +1,104 @@
+<?php
+
+namespace App\Warehouse;
+
+use Carbon\Carbon;
+use DateTimeInterface;
+use JsonSerializable;
+
+class Product implements JsonSerializable
+{
+    private string $name;
+    private string $price;
+    private string $quantity;
+    private ?Carbon $expiresAt;
+    private Carbon $createdAt;
+    private Carbon $updatedAt;
+
+    public function __construct(
+        string $name,
+        string $price,
+        string $quantity,
+        ?string $expiresAt = null,
+        ?string $createdAt = null,
+        ?string $updatedAt = null
+    ) {
+        $this->name = $name;
+        $this->price = $price;
+        $this->quantity = $quantity;
+        $this->expiresAt = $expiresAt ? Carbon::parse($expiresAt) : Carbon::now("UTC");
+        $this->createdAt = $createdAt ? Carbon::parse($createdAt) : Carbon::now("UTC");
+        $this->updatedAt = $updatedAt ? Carbon::parse($updatedAt) : Carbon::now("UTC");
+    }
+
+    public function price(): string
+    {
+        return $this->price;
+    }
+
+    private function setPrice(int $price): void
+    {
+        $this->price = $price;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    public function quantity(): string
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(string $quantity): void
+    {
+        $this->quantity = $quantity;
+    }
+
+    public function expiresAt(): ?Carbon
+    {
+        return $this->expiresAt;
+    }
+
+    public function setExpiresAt(?Carbon $expiresAt): void
+    {
+        $this->expiresAt = $expiresAt;
+    }
+
+    public function createdAt(): Carbon
+    {
+        return $this->createdAt;
+    }
+
+    public function updatedAt(): Carbon
+    {
+        return $this->updatedAt;
+    }
+
+    public function update(array $data): void
+    {
+        $this->setPrice($data["price"] ?: $this->price);
+        $this->setQuantity($data["quantity"] ?: $this->quantity);
+        $this->setExpiresAt($data["expiresAt"] ?: $this->expiresAt);
+
+        $this->updatedAt = Carbon::now("UTC");
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            "name" => $this->name,
+            "price" => $this->price,
+            "quantity" => $this->quantity,
+            "expiresAt" => $this->expiresAt ?
+                $this->expiresAt->timezone("Europe/Riga")->format(DateTimeInterface::ATOM) :
+                null,
+            "createdAt" => $this->createdAt->timezone("Europe/Riga")->format(DateTimeInterface::ATOM),
+            "updatedAt" => $this->updatedAt->timezone("Europe/Riga")->format(DateTimeInterface::ATOM),
+        ];
+    }
+
+
+
+}
