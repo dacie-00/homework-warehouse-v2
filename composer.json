@@ -7,6 +7,7 @@
   "require": {
     "nesbot/carbon": "^2.72",
     "ramsey/uuid": "^4.2",
-    "ext-json": "*"
+    "ext-json": "*",
+    "symfony/console": "^5.4"
   }
 }
