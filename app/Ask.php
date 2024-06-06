@@ -5,6 +5,7 @@ namespace App;
 
 use App\Warehouse\Product;
 use Carbon\Carbon;
+use Carbon\Exceptions\InvalidFormatException;
 use RuntimeException;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -148,8 +149,11 @@ class Ask
 
     private function dateValidator($input): string
     {
-        if (!Carbon::parse($input)) {
-            throw new RuntimeException("Date is not valid");
+        try {
+            Carbon::parse($input);
+        }
+        catch (InvalidFormatException $e) {
+            throw new RuntimeException("Date could not be parsed");
         }
         return $input;
     }
