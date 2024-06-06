@@ -102,10 +102,10 @@ class Product implements JsonSerializable
             "quantity" => $this->quantity,
             "id" => $this->id,
             "expiresAt" => $this->expiresAt ?
-                $this->expiresAt->timezone("Europe/Riga")->format(DateTimeInterface::ATOM) :
+                $this->expiresAt->timezone("UTC")->format(DateTimeInterface::ATOM) :
                 null,
-            "createdAt" => $this->createdAt->timezone("Europe/Riga")->format(DateTimeInterface::ATOM),
-            "updatedAt" => $this->updatedAt->timezone("Europe/Riga")->format(DateTimeInterface::ATOM),
+            "createdAt" => $this->createdAt->timezone("UTC")->format(DateTimeInterface::ATOM),
+            "updatedAt" => $this->updatedAt->timezone("UTC")->format(DateTimeInterface::ATOM),
         ];
     }
 
