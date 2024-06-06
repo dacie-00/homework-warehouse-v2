@@ -10,8 +10,8 @@ use Ramsey\Uuid\Uuid;
 class Product implements JsonSerializable
 {
     private string $name;
-    private string $price;
-    private string $quantity;
+    private int $price;
+    private int $quantity;
     private string $id;
     private ?Carbon $expiresAt;
     private Carbon $createdAt;
@@ -19,9 +19,9 @@ class Product implements JsonSerializable
 
     public function __construct(
         string $name,
-        string $price,
-        string $quantity,
-        ?string $id,
+        int $price,
+        int $quantity,
+        ?string $id = null,
         ?string $expiresAt = null,
         ?string $createdAt = null,
         ?string $updatedAt = null
@@ -35,7 +35,7 @@ class Product implements JsonSerializable
         $this->updatedAt = $updatedAt ? Carbon::parse($updatedAt) : Carbon::now("UTC");
     }
 
-    public function price(): string
+    public function price(): int
     {
         return $this->price;
     }
@@ -50,17 +50,17 @@ class Product implements JsonSerializable
         return $this->name;
     }
 
-    public function quantity(): string
+    public function quantity(): int
     {
         return $this->quantity;
     }
 
-    public function setQuantity(string $quantity): void
+    public function setQuantity(int $quantity): void
     {
         $this->quantity = $quantity;
     }
 
-    public function id(): int
+    public function id(): string
     {
         return $this->id;
     }
@@ -87,9 +87,9 @@ class Product implements JsonSerializable
 
     public function update(array $data): void
     {
-        $this->setPrice($data["price"] ?: $this->price);
-        $this->setQuantity($data["quantity"] ?: $this->quantity);
-        $this->setExpiresAt($data["expiresAt"] ?: $this->expiresAt);
+        $this->setPrice($data["price"] ?? $this->price);
+        $this->setQuantity($data["quantity"] ?? $this->quantity);
+        $this->setExpiresAt($data["expiresAt"] ? Carbon::parse($data["expiresAt"]) : $this->expiresAt);
 
         $this->updatedAt = Carbon::now("UTC");
     }

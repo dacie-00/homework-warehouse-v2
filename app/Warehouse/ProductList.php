@@ -14,10 +14,22 @@ class ProductList implements JsonSerializable
 
     public function __construct(?array $products)
     {
-        $this->products = $products ?: [];
+        if ($products) {
+            foreach ($products as $product) {
+                $this->products[$product->id] = new Product(
+                    $product->name,
+                    $product->price,
+                    $product->quantity,
+                    $product->id,
+                    $product->createdAt,
+                    $product->updatedAt,
+                    $product->expiresAt,
+                );
+            }
+        }
     }
 
-    public function getProducts(): array
+    public function products(): array
     {
         return $this->products;
     }
@@ -27,14 +39,14 @@ class ProductList implements JsonSerializable
         $this->products[$product->id()] = $product;
     }
 
-    public function remove(Product $product): void
+    public function delete(Product $product): void
     {
         unset($this->products[$product->id()]);
     }
 
-    public function getProductById(int $id): Product
+    public function getProductById(string $id): Product
     {
-        if (!isset($this->products[$id])) {
+        if (isset($this->products[$id])) {
             return $this->products[$id];
         }
         throw new OutOfBoundsException("Product with id $id does not exist");

@@ -1,0 +1,11 @@
+Since the passwords aren't stored in plain text in users.json, here they are in plain text for testing purposes.
+This file obviously wouldn't be here in a real world scenario.
+
+username - admin
+password - admin
+
+username - JohnDoe
+password - password123
+
+username - Ross
+password - iLovePainting

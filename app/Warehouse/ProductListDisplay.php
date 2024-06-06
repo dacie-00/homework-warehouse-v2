@@ -5,7 +5,7 @@ namespace App\Warehouse;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DisplayProducts
+class ProductListDisplay
 {
     private OutputInterface $output;
 
@@ -21,14 +21,18 @@ class DisplayProducts
     {
         $table = new Table($this->output);
         $table->setHeaderTitle("Warehouse");
-        $table->setHeaders(["Name", "Stock", "Created", "Last updated"]);
+        $table->setHeaders(["Name", "Stock", "Price", "Created", "Last updated", "Expiration date"]);
         foreach ($products as $product) {
             $table->addRow(
                 [
                     $product->name(),
                     $product->quantity(),
+                    number_format($product->price(), 2) . "$",
                     $product->createdAt()->timezone("Europe/Riga")->format("Y-m-d H:i:s"),
                     $product->updatedAt()->timezone("Europe/Riga")->format("Y-m-d H:i:s"),
+                    $product->expiresAt() ?
+                        $product->expiresAt()->timezone("Europe/Riga")->format("Y-m-d H:i:s") :
+                        "None",
                 ]);
         }
         $table->setStyle("box");
