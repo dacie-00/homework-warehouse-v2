@@ -13,26 +13,26 @@ class Product implements JsonSerializable
     private int $price;
     private int $quantity;
     private string $id;
-    private ?Carbon $expiresAt;
     private Carbon $createdAt;
     private Carbon $updatedAt;
+    private ?Carbon $expiresAt;
 
     public function __construct(
         string $name,
         int $price,
         int $quantity,
         ?string $id = null,
-        ?string $expiresAt = null,
         ?string $createdAt = null,
-        ?string $updatedAt = null
+        ?string $updatedAt = null,
+        ?string $expiresAt = null
     ) {
         $this->name = $name;
         $this->price = $price;
         $this->quantity = $quantity;
         $this->id = $id ?: Uuid::uuid4()->toString();
-        $this->expiresAt = $expiresAt ? Carbon::parse($expiresAt) : Carbon::now("UTC");
         $this->createdAt = $createdAt ? Carbon::parse($createdAt) : Carbon::now("UTC");
         $this->updatedAt = $updatedAt ? Carbon::parse($updatedAt) : Carbon::now("UTC");
+        $this->expiresAt = $expiresAt ? Carbon::parse($expiresAt) : null;
     }
 
     public function price(): int
