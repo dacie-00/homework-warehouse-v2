@@ -27,7 +27,6 @@ function load(string $fileName): ?array
 function save(JsonSerializable $serializable, string $fileName): void
 {
     $serializable = json_encode($serializable, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
-    var_dump($serializable);
     file_put_contents(__DIR__ . "$fileName.json", $serializable);
 }
 
