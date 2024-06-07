@@ -75,7 +75,7 @@ class Ask
         return [$name, $quantity, $price];
     }
 
-    public function quantity(int $min = 0, int $max = 9999999): int
+    public function quantity(int $min = 1, int $max = 9999999): int
     {
         $quantityQuestion = (new Question("Enter the quantity ($min-$max) "))
             ->setValidator(function ($input) use ($min, $max): string {
