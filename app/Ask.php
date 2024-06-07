@@ -24,6 +24,7 @@ class Ask
     public const ADD_TO_PRODUCT = "add to product";
     public const WITHDRAW_FROM_PRODUCT = "withdraw from product";
     public const UPDATE = "update product";
+    public const GET_REPORT = "get report";
     public const EXIT = "exit";
 
     public function __construct(InputInterface $input, OutputInterface $output)
@@ -41,6 +42,7 @@ class Ask
             self::ADD_TO_PRODUCT,
             self::WITHDRAW_FROM_PRODUCT,
             self::UPDATE,
+            self::GET_REPORT,
             self::EXIT,
         ]);
         return $this->helper->ask($this->input, $this->output, $question);

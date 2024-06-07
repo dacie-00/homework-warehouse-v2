@@ -123,6 +123,15 @@ while (true) {
                 "to {$property[$propertyName]} for {$product->name()}");
             save($warehouse, "/storage/products");
             break;
+        case ASK::GET_REPORT:
+            $productCount = 0;
+            $productValue = 0;
+            foreach($warehouse->products() as $product) {
+                $productCount += $product->quantity();
+                $productValue += $product->quantity() * $product->price();
+            }
+            echo "The total amount of products is $productCount and the total sum is $productValue$\n";
+            break;
         case Ask::EXIT:
             exit;
     }
