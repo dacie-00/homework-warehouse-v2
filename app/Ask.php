@@ -68,20 +68,28 @@ class Ask
      */
     public function productInfo(): array
     {
-        $nameQuestion = new Question("What is the product name? ");
-        $name = $this->helper->ask($this->input, $this->output, $nameQuestion);
+        $name = $this->name();
         $quantity = $this->quantity();
         $price = $this->price();
         return [$name, $quantity, $price];
     }
 
+    public function name(): string
+    {
+        $question = (new Question("Enter the name "))
+            ->setValidator(function ($input): string {
+                return $this->nameValidator($input);
+            });
+        return $this->helper->ask($this->input, $this->output, $question);
+    }
+
     public function quantity(int $min = 1, int $max = 9999999): int
     {
-        $quantityQuestion = (new Question("Enter the quantity ($min-$max) "))
+        $question = (new Question("Enter the quantity ($min-$max) "))
             ->setValidator(function ($input) use ($min, $max): string {
                 return $this->quantityValidator($input, $min, $max);
             });
-        return (int)$this->helper->ask($this->input, $this->output, $quantityQuestion);
+        return (int)$this->helper->ask($this->input, $this->output, $question);
     }
 
     public function price(int $max = 9999999): int
@@ -96,15 +104,17 @@ class Ask
     public function property()
     {
         $question = new ChoiceQuestion("What property do you want to update?", [
+            "name",
             "price",
             "expiration date",
         ]);
         $property = $this->helper->ask($this->input, $this->output, $question);
         switch ($property)
         {
+            case "name":
+                return ["name" => $this->name()];
             case "price":
                 return ["price" => $this->price()];
-                break;
             case "expiration date":
                 return ["expiresAt" => $this->date()];
         }
@@ -124,6 +134,14 @@ class Ask
         $password = $this->helper->ask($this->input, $this->output, $passwordQuestion);
 
         return [$username, $password];
+    }
+
+    private function nameValidator(?string $input): string
+    {
+        if (empty($input)) {
+            throw new RuntimeException("Name cannot be empty");
+        }
+        return $input;
     }
 
     private function quantityValidator(string $input, int $min, int $max): string

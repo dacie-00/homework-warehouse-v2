@@ -35,6 +35,16 @@ class Product implements JsonSerializable
         $this->expiresAt = $expiresAt ? Carbon::parse($expiresAt) : null;
     }
 
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    private function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
     public function price(): int
     {
         return $this->price;
@@ -43,11 +53,6 @@ class Product implements JsonSerializable
     private function setPrice(int $price): void
     {
         $this->price = $price;
-    }
-
-    public function name(): string
-    {
-        return $this->name;
     }
 
     public function quantity(): int
@@ -87,9 +92,10 @@ class Product implements JsonSerializable
 
     public function update(array $data): void
     {
+        $this->setName($data["name"] ?? $this->name);
         $this->setPrice($data["price"] ?? $this->price);
         $this->setQuantity($data["quantity"] ?? $this->quantity);
-        $this->setExpiresAt($data["expiresAt"] ? Carbon::parse($data["expiresAt"]) : $this->expiresAt);
+        $this->setExpiresAt(isset($data["expiresAt"]) ? Carbon::parse($data["expiresAt"]) : $this->expiresAt);
 
         $this->updatedAt = Carbon::now("UTC");
     }
@@ -108,5 +114,6 @@ class Product implements JsonSerializable
             "updatedAt" => $this->updatedAt->timezone("UTC")->format(DateTimeInterface::ATOM),
         ];
     }
+
 
 }
